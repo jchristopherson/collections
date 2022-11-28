@@ -2,12 +2,20 @@
 !! functionallity.
 module flist
     use iso_fortran_env
+    use ferror
     implicit none
     private
     public :: container
     public :: node
     public :: list
 
+! ------------------------------------------------------------------------------
+    integer(int32), parameter :: FL_NO_ERROR = 0
+    integer(int32), parameter :: FL_INVALID_ARGUMENT_ERROR = 1000
+    integer(int32), parameter :: FL_OUT_OF_MEMORY_ERROR = 1001
+    integer(int32), parameter :: FL_INDEX_OUT_OF_RANGE_ERROR = 1002
+
+! ------------------------------------------------------------------------------
     !> A container type allowing storage of any Fortran type.
     type container
     private
@@ -228,14 +236,14 @@ module flist
         module subroutine list_set_capacity(this, n, err)
             class(list), intent(inout) :: this
             integer(int32), intent(in) :: n
-            integer(int32), intent(out), optional, target :: err
+            class(errors), intent(inout), optional, target :: err
         end subroutine
 
         module subroutine list_push(this, x, manage, err)
             class(list), intent(inout) :: this
             class(*), intent(in), target :: x
             logical, intent(in), optional :: manage
-            integer(int32), intent(out), optional, target :: err
+            class(errors), intent(inout), optional, target :: err
         end subroutine
 
         module subroutine list_pop(this)
@@ -245,7 +253,7 @@ module flist
         module function list_get(this, i, err) result(rst)
             class(list), intent(in) :: this
             integer(int32), intent(in) :: i
-            integer(int32), intent(out), optional, target :: err
+            class(errors), intent(inout), optional, target :: err
             class(*), pointer :: rst
         end function
 
@@ -254,7 +262,7 @@ module flist
             integer(int32), intent(in) :: i
             class(*), intent(in), target :: x
             logical, intent(in), optional :: manage
-            integer(int32), intent(out), optional, target :: err
+            class(errors), intent(inout), optional, target :: err
         end subroutine
     end interface
 end module
