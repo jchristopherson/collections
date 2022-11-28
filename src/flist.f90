@@ -103,7 +103,7 @@ module flist
         ! A collection of container objects.
         type(container), private, allocatable, dimension(:) :: m_list
         ! The actual number of items in m_list.
-        integer(int32) :: m_count = 0
+        integer(int32), private :: m_count = 0
     contains
         !> Gets the number of items stored in the list.
         !!
@@ -136,23 +136,23 @@ module flist
         !!
         !! @par Syntax
         !! @code{.f90}
-        !! subroutine set_capacity(class(list) this, integer(int32) n, optional integer(int32) err)
+        !! subroutine set_capacity(class(list) this, integer(int32) n, optional class(errors) err)
         !! @endcode
         !!
         !! @param[in,out] this The list object.
         !! @param[in] n The new capacity of the list.  This value must be 
         !!  greater than or equal to 1.
         !! @param[out] err An optional output that can be used to track the
-        !!  error status of the routine.
-        !!  - err = 0: No error.
-        !!  - err = -2: Invalid value for @p n.
-        !!  - otherwise: Memory allocation error.
+        !!  error status of the routine.  Possible error codes are as follows.
+        !!  - FL_NO_ERROR: No error.
+        !!  - FL_INVALID_ARGUMENT_ERROR: Invalid value for @p n.
+        !!  - FL_OUT_OF_MEMORY_ERROR: Memory allocation error.
         procedure, public :: set_capacity => list_set_capacity
         !> Pushes an item onto the back of the list.
         !!
         !! @par Syntax
         !! @code{.f90}
-        !! subroutine push(class(list) this, class(*) x, optional logical manage, optional integer(int32) err)
+        !! subroutine push(class(list) this, class(*) x, optional logical manage, optional class(errors) err)
         !! @endcode
         !!
         !! @param[in,out] this The list object.
@@ -167,8 +167,8 @@ module flist
         !!  recommended to use the default value of true except for very 
         !!  specific and well controlled edge cases.
         !! @param[out] err An optional output that can be used to track the
-        !!  error status of the routine.
-        !!  - err = 0: No error.
+        !!  error status of the routine.  Possible error codes are as follows.
+        !!  - FL_NO_ERROR: No error.
         !!  - otherwise: Memory allocation error.
         procedure, public :: push => list_push
         !> Pops the last item off the back of the list.
@@ -184,22 +184,22 @@ module flist
         !!
         !! @par Syntax
         !! @code{.f90}
-        !! class(*) pointer function get(class(list) this, integer(int32) i, optional integer(int32) err)
+        !! class(*) pointer function get(class(list) this, integer(int32) i, optional class(errors) err)
         !! @endcode
         !!
         !! @param[in] this The list object.
         !! @param[in] i The one-based index of the item to retrieve.
         !! @param[out] err An optional output that can be used to track the
-        !!  error status of the routine.
-        !!  - err = 0: No error.
-        !!  - err = -2: The index parameter @p i is outside the bounds of the
-        !!      list.
+        !!  error status of the routine.  Possible error codes are as follows.
+        !!  - FL_NO_ERROR: No error.
+        !!  - FL_INDEX_OUT_OF_RANGE_ERROR: The index parameter @p i is outside 
+        !!      the bounds of the list.
         procedure, public :: get => list_get
         !> Sets the specified item into the list.
         !!
         !! @par Syntax
         !! @code{.f90}
-        !! subroutine set(class(list) this, integer(int32) i, class(*) x, optional logical manage, optional integer(int32) err))
+        !! subroutine set(class(list) this, integer(int32) i, class(*) x, optional logical manage, optional class(errors) err))
         !! @endcode
         !!
         !! @param[in,out] this The list object.
@@ -215,10 +215,21 @@ module flist
         !!  recommended to use the default value of true except for very 
         !!  specific and well controlled edge cases.
         !! @param[out] err An optional output that can be used to track the
-        !!  error status of the routine.
-        !!  - err = 0: No error.
-        !!  - otherwise: Memory allocation error.
+        !!  error status of the routine.  Possible error codes are as follows.
+        !!  - FL_NO_ERROR: No error.
+        !!  - FL_INDEX_OUT_OF_RANGE_ERROR: The index parameter @p i is outside 
+        !!      the bounds of the list.
+        !!  - FL_OUT_OF_MEMORY_ERROR: Memory allocation error.
         procedure, public :: set => list_set
+        !> Reverses the contents of the list.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! subroutine reverse(class(list) this)
+        !! @endcode
+        !!
+        !! @param[in,out] this The list object.
+        procedure, public :: reverse => list_reverse
     end type
 
     ! flist_list.f90
@@ -263,6 +274,10 @@ module flist
             class(*), intent(in), target :: x
             logical, intent(in), optional :: manage
             class(errors), intent(inout), optional, target :: err
+        end subroutine
+
+        module subroutine list_reverse(this)
+            class(list), intent(inout) :: this
         end subroutine
     end interface
 end module

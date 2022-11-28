@@ -125,7 +125,7 @@ module subroutine list_push(this, x, manage, err)
     else
         errmgr => deferr
     end if
-    index = this%count()
+    index = this%count() + 1
     cap = this%get_capacity()
 
     ! Ensure there's space for the item
@@ -138,7 +138,7 @@ module subroutine list_push(this, x, manage, err)
     end if
 
     ! Store the item
-    this%m_count = index + 1    ! must be before the set routine
+    this%m_count = index    ! must be before the set routine
     call this%set(index, x, manage, errmgr)
     if (errmgr%has_error_occurred()) return
 end subroutine
@@ -168,6 +168,7 @@ module function list_get(this, i, err) result(rst)
     ! Local Variables
     class(errors), pointer :: errmgr
     type(errors), target :: deferr
+    character(len = 256) :: errmsg
     
     ! Initialization
     if (present(err)) then
@@ -179,14 +180,19 @@ module function list_get(this, i, err) result(rst)
 
     ! Input Check
     if (i < 1 .or. i > this%count()) then
+        write(errmsg, 100) "The supplied index of ", i, &
+            " is outside the bounds of the array [1, ", this%count(), "]."
         call errmgr%report_error("list_get", &
-            "The supplied index is outside the bounds of the list.", &
-            FL_INDEX_OUT_OF_RANGE_ERROR)
+            trim(errmsg), FL_INDEX_OUT_OF_RANGE_ERROR)
         return
     end if
 
     ! Process
     rst => this%m_list(i)%get()
+    return
+
+    ! Formatting
+100 format(A, I0, A, I0, A)
 end function
 
 ! ------------------------------------------------------------------------------
@@ -217,8 +223,10 @@ module subroutine list_set(this, i, x, manage, err)
 
     ! Input Check
     if (i < 1 .or. i > this%count()) then
+        write(errmsg, 101) "The supplied index of ", i, &
+            " is outside the bounds of the array [1, ", this%count(), "]."
         call errmgr%report_error("list_set", &
-            "The supplied index is outside the bounds of the list.", &
+            trim(errmsg), &
             FL_INDEX_OUT_OF_RANGE_ERROR)
         return
     end if
@@ -245,9 +253,38 @@ module subroutine list_set(this, i, x, manage, err)
 
     ! Formatting
 100 format(A, I0, A)
+101 format(A, I0, A, I0, A)
 end subroutine
 
 ! ------------------------------------------------------------------------------
+module subroutine list_reverse(this)
+    ! Arguments
+    class(list), intent(inout) :: this
+
+    ! Local Variables
+    integer(int32) :: i, j, m, n
+    type(container) :: temp
+
+    ! Initialization
+    n = this%count()
+
+    ! Quick Return
+    if (n < 2) return
+    
+    ! Process
+    if (mod(n, 2) == 0) then
+        m = n / 2
+    else
+        m = (n - 1) / 2
+    end if
+    j = n
+    do i = 1, m
+        temp = this%m_list(j)
+        this%m_list(j) = this%m_list(i)
+        this%m_list(i) = temp
+        j = j - 1
+    end do
+end subroutine
 
 ! ------------------------------------------------------------------------------
 
