@@ -4,3 +4,5 @@ set(source_files
 )
 
 add_library(flist ${source_files})
+target_include_directories(flist PRIVATE ${ferror_SOURCE_DIR}/include)
+target_link_libraries(flist ferror)
