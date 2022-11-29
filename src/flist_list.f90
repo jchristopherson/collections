@@ -257,33 +257,57 @@ module subroutine list_set(this, i, x, manage, err)
 end subroutine
 
 ! ------------------------------------------------------------------------------
-module subroutine list_reverse(this)
+module subroutine list_insert(this, i, x, manage, err)
     ! Arguments
     class(list), intent(inout) :: this
+    integer(int32) :: i
+    class(*), intent(in) :: x
+    logical, intent(in), optional :: manage
+    class(errors), intent(inout), optional, target :: err
 
     ! Local Variables
-    integer(int32) :: i, j, m, n
-    type(container) :: temp
-
+    class(errors), pointer :: errmgr
+    type(errors), target :: deferr
+    character(len = 256) :: errmsg
+    logical :: mng
+    integer(int32) :: j, n
+    
     ! Initialization
+    if (present(err)) then
+        errmgr => err
+    else
+        errmgr => deferr
+    end if
+    mng = .true.
+    if (present(manage)) mng = manage
     n = this%count()
 
-    ! Quick Return
-    if (n < 2) return
-    
-    ! Process
-    if (mod(n, 2) == 0) then
-        m = n / 2
-    else
-        m = (n - 1) / 2
+    ! Input Checking
+    if (i < 1 .or. i > n + 1) then
+        write(errmsg, 100) "The supplied index of ", i, &
+            " is outside the bounds of the list: (1, ", n, ")."
+        call errmgr%report_error("list_insert", trim(errmsg), &
+            FL_INDEX_OUT_OF_RANGE_ERROR)
+        return
     end if
-    j = n
-    do i = 1, m
-        temp = this%m_list(j)
-        this%m_list(j) = this%m_list(i)
-        this%m_list(i) = temp
-        j = j - 1
+
+    ! Ensure there's capacity
+    if (this%get_capacity() <= n + 1) then
+        call this%set_capacity(n + DEFAULT_BUFFER_SIZE, errmgr)
+        if (errmgr%has_error_occurred()) return
+    end if
+
+    ! Shift everything back by one element and insert the item
+    this%m_count = this%m_count + 1
+    do j = n, i, -1
+        call this%set(j + 1, this%get(j), mng, errmgr)
+        if (errmgr%has_error_occurred()) return
     end do
+    call this%set(i, x, mng, errmgr)
+    if (errmgr%has_error_occurred()) return
+
+    ! Formatting
+100 format(A, I0, A, I0, A)
 end subroutine
 
 ! ------------------------------------------------------------------------------

@@ -221,15 +221,32 @@ module flist
         !!      the bounds of the list.
         !!  - FL_OUT_OF_MEMORY_ERROR: Memory allocation error.
         procedure, public :: set => list_set
-        !> Reverses the contents of the list.
+        !> Inserts an item into the list.
         !!
         !! @par Syntax
         !! @code{.f90}
-        !! subroutine reverse(class(list) this)
+        !! subroutine insert(class(list) this, integer(int32) i, class(*) x, optional logical manage, optional class(errors) err)
         !! @endcode
         !!
         !! @param[in,out] this The list object.
-        procedure, public :: reverse => list_reverse
+        !! @param[in] i The one-based index defining where to put the item.
+        !! @param[in] x The object to store.
+        !! @param[in] manage An optional input used to determine if the list 
+        !!  should manage memory for this object.  If set to true a clone of
+        !!  @p x is stored and the list will handle management of resources
+        !!  held by the clone.  If false, the list will not manage resources
+        !!  held by x and x itself will be stored.  Notice, in this manner it 
+        !!  is possible for x to go out of scope while the list still persists
+        !!  thereby resulting in a potentially undefined behavior.  It is 
+        !!  recommended to use the default value of true except for very 
+        !!  specific and well controlled edge cases.
+        !! @param[out] err An optional output that can be used to track the
+        !!  error status of the routine.  Possible error codes are as follows.
+        !!  - FL_NO_ERROR: No error.
+        !!  - FL_INDEX_OUT_OF_RANGE_ERROR: The index parameter @p i is outside 
+        !!      the bounds of the list.
+        !!  - FL_OUT_OF_MEMORY_ERROR: Memory allocation error.
+        procedure, public :: insert => list_insert
     end type
 
     ! flist_list.f90
@@ -276,8 +293,12 @@ module flist
             class(errors), intent(inout), optional, target :: err
         end subroutine
 
-        module subroutine list_reverse(this)
+        module subroutine list_insert(this, i, x, manage, err)
             class(list), intent(inout) :: this
+            integer(int32) :: i
+            class(*), intent(in) :: x
+            logical, intent(in), optional :: manage
+            class(errors), intent(inout), optional, target :: err
         end subroutine
     end interface
 end module
