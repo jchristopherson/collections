@@ -30,7 +30,7 @@ program list_test
         type is (integer(int32))
             if (ptr /= i) then
                 flag = i
-                go to 100
+                ! go to 100
             end if
         end select
     end do
@@ -48,19 +48,6 @@ program list_test
         type is (integer(int32))
             if (ptr /= i) then
                 flag = i * 10
-                go to 100
-            end if
-        end select
-    end do
-
-    ! Reverse the list
-    call x%reverse()
-    do i = n - 1, 1, -1
-        ptr => x%get(i)
-        select type (ptr)
-        type is (integer(int32))
-            if (ptr /= i) then
-                flag = i * 100
                 go to 100
             end if
         end select
