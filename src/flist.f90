@@ -99,6 +99,80 @@ module flist
     end interface
 
     !> Defines a generic, dynamically sizable list.
+    !!
+    !! @par Example
+    !! The following example illustrates basic usage of the list.
+    !! @code{.f90}
+    !! program list_example
+    !!     use flist
+    !!     use iso_fortran_env
+    !!     implicit none
+    !!
+    !!     ! Variables
+    !!     integer(int32), parameter :: n = 10
+    !!     integer(int32) :: i
+    !!     type(list) :: x
+    !!     class(*), pointer :: ptr
+    !!
+    !!     ! Create a list
+    !!     do i = 1, n
+    !!         call x%push(2 * i)
+    !!     end do
+    !!
+    !!     ! Print it out to the command line
+    !!     print '(A)', "***** Original List *****"
+    !!     do i = 1, n
+    !!         ptr => x%get(i)
+    !!
+    !!         ! The list uses unlimited polymorphic types; therefore, we need to
+    !!         ! use the select type construct.
+    !!         select type (ptr)
+    !!         type is (integer(int32))
+    !!             print *, ptr
+    !!         end select
+    !!     end do
+    !!
+    !!     ! Insert the integer value of 100 into the 5th slot in the list
+    !!     call x%insert(5, 100)
+    !!
+    !!     ! Print it out again to illustrate the change
+    !!     print '(A)', new_line('a') // "***** After Insertion *****"
+    !!     do i = 1, x%count()
+    !!         ptr => x%get(i)
+    !!         select type (ptr)
+    !!         type is (integer(int32))
+    !!             print *, ptr
+    !!         end select
+    !!     end do
+    !! end program
+    !! @endcode
+    !! The above program generates the following output.
+    !! @code{.txt}
+    !! ***** Original List *****
+    !!     2
+    !!     4
+    !!     6
+    !!     8
+    !!    10
+    !!    12
+    !!    14
+    !!    16
+    !!    18
+    !!    20
+    !!
+    !! ***** After Insertion *****
+    !!     2
+    !!     4
+    !!     6
+    !!     8
+    !!   100
+    !!    10
+    !!    12
+    !!    14
+    !!    16
+    !!    18
+    !!    20
+    !! @endcode
     type list
         ! A collection of container objects.
         type(container), private, allocatable, dimension(:) :: m_list
@@ -142,7 +216,7 @@ module flist
         !! @param[in,out] this The list object.
         !! @param[in] n The new capacity of the list.  This value must be 
         !!  greater than or equal to 1.
-        !! @param[out] err An optional output that can be used to track the
+        !! @param[in,out] err An optional output that can be used to track the
         !!  error status of the routine.  Possible error codes are as follows.
         !!  - FL_NO_ERROR: No error.
         !!  - FL_INVALID_ARGUMENT_ERROR: Invalid value for @p n.
@@ -166,7 +240,7 @@ module flist
         !!  thereby resulting in a potentially undefined behavior.  It is 
         !!  recommended to use the default value of true except for very 
         !!  specific and well controlled edge cases.
-        !! @param[out] err An optional output that can be used to track the
+        !! @param[in,out] err An optional output that can be used to track the
         !!  error status of the routine.  Possible error codes are as follows.
         !!  - FL_NO_ERROR: No error.
         !!  - otherwise: Memory allocation error.
@@ -189,7 +263,7 @@ module flist
         !!
         !! @param[in] this The list object.
         !! @param[in] i The one-based index of the item to retrieve.
-        !! @param[out] err An optional output that can be used to track the
+        !! @param[in,out] err An optional output that can be used to track the
         !!  error status of the routine.  Possible error codes are as follows.
         !!  - FL_NO_ERROR: No error.
         !!  - FL_INDEX_OUT_OF_RANGE_ERROR: The index parameter @p i is outside 
@@ -214,7 +288,7 @@ module flist
         !!  thereby resulting in a potentially undefined behavior.  It is 
         !!  recommended to use the default value of true except for very 
         !!  specific and well controlled edge cases.
-        !! @param[out] err An optional output that can be used to track the
+        !! @param[in,out] err An optional output that can be used to track the
         !!  error status of the routine.  Possible error codes are as follows.
         !!  - FL_NO_ERROR: No error.
         !!  - FL_INDEX_OUT_OF_RANGE_ERROR: The index parameter @p i is outside 
@@ -240,13 +314,37 @@ module flist
         !!  thereby resulting in a potentially undefined behavior.  It is 
         !!  recommended to use the default value of true except for very 
         !!  specific and well controlled edge cases.
-        !! @param[out] err An optional output that can be used to track the
+        !! @param[in,out] err An optional output that can be used to track the
         !!  error status of the routine.  Possible error codes are as follows.
         !!  - FL_NO_ERROR: No error.
         !!  - FL_INDEX_OUT_OF_RANGE_ERROR: The index parameter @p i is outside 
         !!      the bounds of the list.
         !!  - FL_OUT_OF_MEMORY_ERROR: Memory allocation error.
         procedure, public :: insert => list_insert
+        !> Removes an item from the list.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! subroutine remove(class(list) this, integer(int32) i, optional class(errors) err)
+        !! @endcode
+        !!
+        !! @param[in,out] this The list object.
+        !! @param[in] i The one-based index defining which item to remove.
+        !! @param[in,out] err An optional output that can be used to track the
+        !!  error status of the routine.  Possible error codes are as follows.
+        !!  - FL_NO_ERROR: No error.
+        !!  - FL_INDEX_OUT_OF_RANGE_ERROR: The index parameter @p i is outside 
+        !!      the bounds of the list.
+        procedure, public :: remove => list_remove
+        !> Clears the entire list.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! subroutine clear(class(list) this)
+        !! @endcode
+        !!
+        !! @param[in,out] this The list object.
+        procedure, public :: clear => list_clear
     end type
 
     ! flist_list.f90
@@ -299,6 +397,16 @@ module flist
             class(*), intent(in) :: x
             logical, intent(in), optional :: manage
             class(errors), intent(inout), optional, target :: err
+        end subroutine
+
+        module subroutine list_remove(this, i, err)
+            class(list), intent(inout) :: this
+            integer(int32) :: i
+            class(errors), intent(inout), optional, target :: err
+        end subroutine
+
+        module subroutine list_clear(this)
+            class(list), intent(inout) :: this
         end subroutine
     end interface
 end module

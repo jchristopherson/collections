@@ -311,12 +311,66 @@ module subroutine list_insert(this, i, x, manage, err)
 end subroutine
 
 ! ------------------------------------------------------------------------------
+module subroutine list_remove(this, i, err)
+    ! Arguments
+    class(list), intent(inout) :: this
+    integer(int32) :: i
+    class(errors), intent(inout), optional, target :: err
+
+    ! Local Variables
+    class(errors), pointer :: errmgr
+    type(errors), target :: deferr
+    character(len = 256) :: errmsg
+    integer(int32) :: n
+    
+    ! Initialization
+    if (present(err)) then
+        errmgr => err
+    else
+        errmgr => deferr
+    end if
+    n = this%count()
+
+    ! Quick Return
+    if (n == 0) return
+
+    ! Input Checking
+    if (i < 1 .or. i > n) then
+        write(errmsg, 100) "The supplied index of ", i, &
+            " is outside the bounds of the list: (1, ", n, ")."
+        call errmgr%report_error("list_remove", trim(errmsg), &
+            FL_INDEX_OUT_OF_RANGE_ERROR)
+        return
+    end if
+
+    ! Process
+    if (n == 1) then
+        call this%clear()
+    else
+        call this%m_list(i)%free()
+        this%m_list(i:n-1) = this%m_list(i+1:n)
+        this%m_count = this%m_count - 1
+    end if
+
+    ! Formatting
+100 format(A, I0, A, I0, A)
+end subroutine
 
 ! ------------------------------------------------------------------------------
+module subroutine list_clear(this)
+    ! Arguments
+    class(list), intent(inout) :: this
 
-! ------------------------------------------------------------------------------
+    ! Local Variables
+    integer(int32) :: i, n
 
-! ------------------------------------------------------------------------------
+    ! Process
+    n = this%count()
+    do i = 1, n
+        call this%m_list(i)%free()
+    end do
+    this%m_count = 0
+end subroutine
 
 ! ------------------------------------------------------------------------------
 end submodule
