@@ -9,3 +9,4 @@ macro(create_test testname codename)
 endmacro()
 
 create_test(list_test list_test.f90)
+create_test(linked_list_test linked_list_test.f90)
