@@ -2,6 +2,7 @@ set(source_files
     flist.f90
     flist_container.f90
     flist_list.f90
+    flist_linked_list.f90
 )
 
 add_library(flist ${source_files})

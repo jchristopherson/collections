@@ -8,23 +8,24 @@ module flist
     public :: container
     public :: node
     public :: list
+    public :: linked_list
 
 ! ------------------------------------------------------------------------------
     integer(int32), parameter :: FL_NO_ERROR = 0
     integer(int32), parameter :: FL_INVALID_ARGUMENT_ERROR = 1000
     integer(int32), parameter :: FL_OUT_OF_MEMORY_ERROR = 1001
     integer(int32), parameter :: FL_INDEX_OUT_OF_RANGE_ERROR = 1002
+    integer(int32), parameter :: FL_INVALID_ITERATOR_ERROR = 1003
 
 ! ------------------------------------------------------------------------------
     !> A container type allowing storage of any Fortran type.
     type container
-    private
         ! A pointer to an unlimited polymorphic variable allowing storage of
         ! any type.
-        class(*), pointer :: m_item => null()
+        class(*), private, pointer :: m_item => null()
         ! Set to true to delete @ref item when this container object goes out
         ! of scope; else, set to false to persist.
-        logical :: m_delete = .true.
+        logical, private :: m_delete = .true.
 
     contains
         !> Gets a pointer to the stored unlimited polymorphic object.
@@ -64,17 +65,11 @@ module flist
     end type
 
     !> A node in a linked list container.
-    type node
-        !> A pointer to an unlimited polymorphic variable allowing storage of
-        !! any type.
-        class(*), pointer :: item => null()
+    type, extends(container) :: node
         !> A pointer to the next node in the collection.
-        type(node), pointer :: next => null()
+        type(node), private, pointer :: next => null()
         !> A pointer to the previous node in the collection.
-        type(node), pointer :: previous => null()
-        !> Set to true to delete @ref item when this node object goes out
-        !! of scope; else, set to false to persist.
-        logical :: delete = .true.
+        type(node), private, pointer :: previous => null()
     end type
 
     ! flist_container.f90
@@ -268,6 +263,8 @@ module flist
         !!  - FL_NO_ERROR: No error.
         !!  - FL_INDEX_OUT_OF_RANGE_ERROR: The index parameter @p i is outside 
         !!      the bounds of the list.
+        !!
+        !! @return A pointer to the requested object.
         procedure, public :: get => list_get
         !> Sets the specified item into the list.
         !!
@@ -407,6 +404,140 @@ module flist
 
         module subroutine list_clear(this)
             class(list), intent(inout) :: this
+        end subroutine
+    end interface
+
+! ------------------------------------------------------------------------------
+    !> Defines a generic, linked-list container.
+    type linked_list
+        ! The number of nodes in the container.
+        integer(int32), private :: m_count = 0
+        ! A pointer to the first node in the container.
+        type(node), private, pointer :: m_first => null()
+        ! A pointer to the last node in the container.
+        type(node), private, pointer :: m_last => null()
+        ! A pointer to the current node selected by the user.
+        type(node), private, pointer :: m_current => null()
+    contains
+        !> Gets the number of items in the list.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! integer(int32) function count(class(linked_list) this)
+        !! @endcode
+        !!
+        !! @param[in] this The linked_list object.
+        !! @return The number of items in the list.
+        procedure, public :: count => ll_count
+        !> Moves the current position in the list to the first item.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! subroutine move_to_first(class(linked_list) this)
+        !! @endcode
+        !!
+        !! @param[in,out] this The linked_list object.
+        procedure, public :: move_to_first => ll_move_to_first
+        !> Moves the current position in the list to the last item.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! subroutine move_to_last(class(linked_list) this)
+        !! @endcode
+        !!
+        !! @param[in,out] this The linked_list object.
+        procedure, public :: move_to_last => ll_move_to_last
+        !> Moves to the next item in the list.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! logical function next(class(linked_list) this)
+        !! @endcode
+        !!
+        !! @param[in,out] this The linked_list object.
+        !! @return Returns true if the move was successful; else, returns false.
+        !! Typically a false value indicates the end of the list; however, a
+        !! false value can be encountered if the list is emtpy.
+        procedure, public :: next => ll_move_to_next
+        !> Moves to the previous item in the list.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! logical function previous(class(linked_list) this)
+        !! @endcode
+        !!
+        !! @param[in,out] this The linked_list object.
+        !! @return Returns true if the move was successful; else, returns false.
+        !! Typically a false value indicates the end of the list; however, a
+        !! false value can be encountered if the list is emtpy.
+        procedure, public :: previous => ll_move_to_previous
+        !> Gets the current item.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! class(*) pointer function get(class(linked_list) this)
+        !! @endcode
+        !!
+        !! @param[in] this The linked_list object.
+        !! @return The currently referenced item from the list.  This may be 
+        !!  null if the list is empty.
+        procedure, public :: get => ll_get
+        procedure, public :: set => ll_set
+        procedure, public :: push => ll_push
+        procedure, public :: clear => ll_clear
+        final :: ll_destroy
+    end type
+
+    ! flist_linked_list.f90
+    interface
+        pure module function ll_count(this) result(rst)
+            class(linked_list), intent(in) :: this
+            integer(int32) :: rst
+        end function
+
+        module subroutine ll_move_to_first(this)
+            class(linked_list), intent(inout) :: this
+        end subroutine
+
+        module subroutine ll_move_to_last(this)
+            class(linked_list), intent(inout) :: this
+        end subroutine
+
+        module function ll_move_to_next(this) result(rst)
+            class(linked_list), intent(inout) :: this
+            logical :: rst
+        end function
+
+        module function ll_move_to_previous(this) result(rst)
+            class(linked_list), intent(inout) :: this
+            logical :: rst
+        end function
+
+        module function ll_get(this) result(rst)
+            class(linked_list), intent(in) :: this
+            class(*), pointer :: rst
+        end function
+
+        module subroutine ll_set(this, x, manage, err)
+            class(linked_list), intent(inout) :: this
+            class(*), intent(in), target :: x
+            logical, intent(in), optional :: manage
+            class(errors), intent(inout), optional, target :: err
+        end subroutine
+
+        module subroutine ll_push(this, x, manage, err)
+            class(linked_list), intent(inout) :: this
+            class(*), intent(in), target :: x
+            logical, intent(in), optional :: manage
+            class(errors), intent(inout), optional, target :: err
+        end subroutine
+
+        module subroutine ll_clear(this)
+            class(linked_list), intent(inout) :: this
+        end subroutine
+
+        module subroutine ll_destroy(this)
+            type(linked_list), intent(inout) :: this
         end subroutine
     end interface
 end module
