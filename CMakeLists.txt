@@ -32,3 +32,10 @@ if (BUILD_TESTING)
     enable_testing()
     add_subdirectory(tests)
 endif()
+
+# Examples
+option(BUILD_FLIST_EXAMPLES "Build examples")
+message(STATUS "Build FLIST examples: ${BUILD_FLIST_EXAMPLES}")
+if (BUILD_FLIST_EXAMPLES)
+    add_subdirectory(examples)
+endif()
