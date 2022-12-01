@@ -38,6 +38,54 @@ program linked_list_test
         if (.not.check) exit
     end do
 
+    ! Pop an item of the back end
+    call x%move_to_last() ! This is to test a feature in the pop code that resets the iterator position
+    call x%pop()
+
+    if (x%count() /= n - 1) then
+        flag = -2
+        go to 100
+    end if
+
+    ! Iterate around the list - currently the iterator should be at the end of 
+    ! the list
+    ptr => x%get()
+    select type (ptr)
+    type is (integer(int32))
+        if (ptr /= n - 1) then
+            flag = -3
+            go to 100
+        end if
+    end select
+
+    ! Move to the front of the list
+    call x%move_to_first()
+    ptr => x%get()
+    select type (ptr)
+    type is (integer(int32))
+        if (ptr /= 1) then
+            flag = -4
+            go to 100
+        end if
+    end select
+
+    ! Set an item into the list
+    call x%set(100)
+    ptr => x%get()
+    select type (ptr)
+    type is (integer(int32))
+        if (ptr /= 100) then
+            flag = -5
+            go to 100
+        end if
+    end select
+
+    ! Clear the list
+    call x%clear()
+    if (x%count() /= 0) then
+        flag = -6
+        go to 100
+    end if
 
     ! End
 100 continue
