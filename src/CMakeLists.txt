@@ -1,10 +1,10 @@
 set(source_files
-    flist.f90
-    flist_container.f90
-    flist_list.f90
-    flist_linked_list.f90
+    collections.f90
+    collections_container.f90
+    collections_list.f90
+    collections_linked_list.f90
 )
 
-add_library(flist ${source_files})
-target_include_directories(flist PRIVATE ${ferror_SOURCE_DIR}/include)
-target_link_libraries(flist ferror)
+add_library(collections ${source_files})
+target_include_directories(collections PRIVATE ${ferror_SOURCE_DIR}/include)
+target_link_libraries(collections ferror)

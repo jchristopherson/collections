@@ -1,6 +1,6 @@
 !> A module containing various collections using Fortran's unlimited polymorphic
 !! functionallity.
-module flist
+module collections
     use iso_fortran_env
     use ferror
     implicit none
@@ -72,7 +72,7 @@ module flist
         type(node), private, pointer :: previous => null()
     end type
 
-    ! flist_container.f90
+    ! collections_container.f90
     interface
         module function c_get(this) result(rst)
             class(container), intent(in) :: this
@@ -99,7 +99,7 @@ module flist
     !! The following example illustrates basic usage of the list.
     !! @code{.f90}
     !! program list_example
-    !!     use flist
+    !!     use collections
     !!     use iso_fortran_env
     !!     implicit none
     !!
@@ -344,7 +344,7 @@ module flist
         procedure, public :: clear => list_clear
     end type
 
-    ! flist_list.f90
+    ! collections_list.f90
     interface
         pure module function list_get_count(this) result(rst)
             class(list), intent(in) :: this
@@ -551,7 +551,7 @@ module flist
         final :: ll_destroy
     end type
 
-    ! flist_linked_list.f90
+    ! collections_linked_list.f90
     interface
         pure module function ll_count(this) result(rst)
             class(linked_list), intent(in) :: this

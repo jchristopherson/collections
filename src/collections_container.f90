@@ -1,4 +1,4 @@
-submodule (flist) flist_container
+submodule (collections) collections_container
     implicit none
 contains
 ! ------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-submodule (flist) flist_linked_list
+submodule (collections) collections_linked_list
 contains
 ! ------------------------------------------------------------------------------
 pure module function ll_count(this) result(rst)

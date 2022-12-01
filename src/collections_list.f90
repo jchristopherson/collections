@@ -1,4 +1,4 @@
-submodule (flist) flist_list
+submodule (collections) collections_list
     implicit none
 
     ! Default buffer size

@@ -1,5 +1,5 @@
 program linked_list_test
-    use flist
+    use collections
     use iso_fortran_env
     implicit none
 

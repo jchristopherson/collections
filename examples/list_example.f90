@@ -1,5 +1,5 @@
 program list_example
-    use flist
+    use collections
     use iso_fortran_env
     implicit none
 

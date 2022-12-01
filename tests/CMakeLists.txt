@@ -1,6 +1,6 @@
 macro(create_test testname codename)
     add_executable(${testname} ${codename})
-    target_link_libraries(${testname} flist)
+    target_link_libraries(${testname} collections)
     add_test(
         NAME ${testname}
         WORKING_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}

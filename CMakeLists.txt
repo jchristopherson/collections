@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 project(
-    flist 
+    collections 
     LANGUAGES Fortran
     VERSION 1.0.0
 )
@@ -34,8 +34,8 @@ if (BUILD_TESTING)
 endif()
 
 # Examples
-option(BUILD_FLIST_EXAMPLES "Build examples")
-message(STATUS "Build FLIST examples: ${BUILD_FLIST_EXAMPLES}")
-if (BUILD_FLIST_EXAMPLES)
+option(BUILD_collections_EXAMPLES "Build examples")
+message(STATUS "Build collections examples: ${BUILD_collections_EXAMPLES}")
+if (BUILD_collections_EXAMPLES)
     add_subdirectory(examples)
 endif()
