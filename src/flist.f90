@@ -482,9 +482,72 @@ module flist
         !! @return The currently referenced item from the list.  This may be 
         !!  null if the list is empty.
         procedure, public :: get => ll_get
+        !> Replaces the current item in the list with the supplied item.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! subroutine set(class(linked_list) this, class(*) x, optional logical manage, optional class(errors) err)
+        !! @endcode
+        !!
+        !! @param[in,out] this The linked_list object.
+        !! @param[in] x The object to store.
+        !! @param[in] manage An optional input used to determine if the list 
+        !!  should manage memory for this object.  If set to true a clone of
+        !!  @p x is stored and the list will handle management of resources
+        !!  held by the clone.  If false, the list will not manage resources
+        !!  held by x and x itself will be stored.  Notice, in this manner it 
+        !!  is possible for x to go out of scope while the list still persists
+        !!  thereby resulting in a potentially undefined behavior.  It is 
+        !!  recommended to use the default value of true except for very 
+        !!  specific and well controlled edge cases.
+        !! @param[in,out] err An optional output that can be used to track the
+        !!  error status of the routine.  Possible error codes are as follows.
+        !!  - FL_NO_ERROR: No error.
+        !!  - FL_OUT_OF_MEMORY_ERROR: Memory allocation error.
         procedure, public :: set => ll_set
+        !> Pushes an item onto the end of the list.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! subroutine push(class(linked_list) this, class(*) x, optional logical manage, optional class(errors) err)
+        !! @endcode
+        !!
+        !! @param[in,out] this The linked_list object.
+        !! @param[in] x The object to store.
+        !! @param[in] manage An optional input used to determine if the list 
+        !!  should manage memory for this object.  If set to true a clone of
+        !!  @p x is stored and the list will handle management of resources
+        !!  held by the clone.  If false, the list will not manage resources
+        !!  held by x and x itself will be stored.  Notice, in this manner it 
+        !!  is possible for x to go out of scope while the list still persists
+        !!  thereby resulting in a potentially undefined behavior.  It is 
+        !!  recommended to use the default value of true except for very 
+        !!  specific and well controlled edge cases.
+        !! @param[in,out] err An optional output that can be used to track the
+        !!  error status of the routine.  Possible error codes are as follows.
+        !!  - FL_NO_ERROR: No error.
+        !!  - FL_OUT_OF_MEMORY_ERROR: Memory allocation error.
         procedure, public :: push => ll_push
+        !> Pops an item off the back of the list.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! subroutine pop(class(linked_list) this)
+        !! @endcode
+        !!
+        !! @param[in,out] this The linked_list object.
+        procedure, public :: pop => ll_pop
+        !> Clears the entire list.
+        !!
+        !! @par Syntax
+        !! @code{.f90}
+        !! subroutine clear(class(linked_list) this)
+        !! @endcode
+        !!
+        !! @param[in,out] this The linked_list object.
         procedure, public :: clear => ll_clear
+        !> Finalizer for the linked_list type responsible for clean-up duties
+        !! when the list goes out of scope.
         final :: ll_destroy
     end type
 
@@ -530,6 +593,10 @@ module flist
             class(*), intent(in), target :: x
             logical, intent(in), optional :: manage
             class(errors), intent(inout), optional, target :: err
+        end subroutine
+
+        module subroutine ll_pop(this)
+            class(linked_list), intent(inout) :: this
         end subroutine
 
         module subroutine ll_clear(this)

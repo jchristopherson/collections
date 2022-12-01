@@ -220,8 +220,34 @@ module subroutine ll_push(this, x, manage, err)
 end subroutine
 
 ! ------------------------------------------------------------------------------
+module subroutine ll_pop(this)
+    ! Arguments
+    class(linked_list), intent(inout) :: this
 
-! ------------------------------------------------------------------------------
+    ! Local Variables
+    type(node), pointer :: temp
+
+    ! Quick Return
+    if (this%count() == 0) return
+    if (.not.associated(this%m_last)) return
+
+    ! Process
+    if (this%count() == 1) then
+        call this%clear()
+    else
+        temp => this%m_last%previous
+        nullify(temp%next)
+        if (associated(this%m_current, this%m_last)) then
+            ! If the iterator is referencing the last item shift it to the 
+            ! "new" last item
+            this%m_current => temp
+        end if
+        call this%m_last%free()
+        deallocate(this%m_last)
+        this%m_last => temp
+        this%m_count = this%m_count - 1
+    end if
+end subroutine
 
 ! ------------------------------------------------------------------------------
 module subroutine ll_clear(this)
