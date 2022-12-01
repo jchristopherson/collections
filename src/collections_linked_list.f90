@@ -182,7 +182,7 @@ module subroutine ll_push(this, x, manage, err)
         if (flag /= 0) go to 100
 
         temp => this%m_last
-
+        temp%next => newnode
         this%m_last => newnode
         this%m_last%previous => temp
         this%m_last%next => null()
