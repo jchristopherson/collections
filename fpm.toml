@@ -28,3 +28,13 @@ main = "list_test.f90"
 name = "linked_list_test"
 source-dir = "tests"
 main = "linked_list_test.f90"
+
+[[example]]
+name = "list_example"
+source-dir = "examples"
+main = "list_example.f90"
+
+[[example]]
+name = "linked_list_example"
+source-dir = "examples"
+main = "linked_list_example.f90"
