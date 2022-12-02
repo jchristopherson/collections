@@ -5,7 +5,7 @@ A set of types supporting collections in Fortran.
 The collections library contains generic and dynamically sizeable collection types using unlimited polymorphic types with an object-oriented design.
 
 ## Compiling
-Either CMake or [Fortran Package Manager](https://github.com/fortran-lang/fpm) may be used.
+Either [CMake](https://cmake.org/) or [Fortran Package Manager](https://github.com/fortran-lang/fpm) may be used.
 
 Fortran Package Manager can be used as follows.
 ```
