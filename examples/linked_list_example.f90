@@ -17,7 +17,7 @@ program linked_list_example
 
     ! Print it out
     print '(A)', "***** Original List *****"
-    check = .true.
+    check = associated(x%get())
     do while (check)
         ptr => x%get()
 
