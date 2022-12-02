@@ -36,7 +36,6 @@ bin/
 build/
 latex/
 lib/
-dependencies/
 
 # CMake Stuff
 *.json
