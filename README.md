@@ -5,15 +5,7 @@ A set of types supporting collections in Fortran.
 The collections library contains generic and dynamically sizeable collection types using unlimited polymorphic types with an object-oriented design.
 
 ## Compiling
-Either [CMake](https://cmake.org/) or [Fortran Package Manager](https://github.com/fortran-lang/fpm) may be used.
-
-Fortran Package Manager can be used as follows.
-```
-fpm build --profile release
-fpm test --profile release
-```
-
-See [Running CMake](https://cmake.org/runningcmake/) for instructions on how to build using CMake.
+[CMake](https://cmake.org/) is the preferred build system for this library.  See [Running CMake](https://cmake.org/runningcmake/) for instructions on how to build using CMake.
 
 ## Dependencies
 This library depends upon the [FERROR](https://github.com/jchristopherson/ferror) library.
