@@ -31,7 +31,8 @@ else()
             )
         endif()
     endif()
-
+    
+    set(ferror_INCLUDE_DIR ${ferror_BINARY_DIR}/include)
 endif()
 
 # Make a parent-scope variable for the library
