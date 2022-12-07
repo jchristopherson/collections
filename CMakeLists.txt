@@ -1,28 +1,35 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.17)
 project(
     collections 
     LANGUAGES Fortran
     VERSION 1.0.0
 )
 
-# Debug or Release?
-set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build.")
-set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release")
+# Utilize the GNU installation structure
+include(GNUInstallDirs)
 
-# Build a static or shared library?
-option(BUILD_SHARED_LIBS "Build shared libraries" off)
+# Get the macros and functions we'll need
+include("${PROJECT_SOURCE_DIR}/cmake/helper.cmake")
 
-# Export all symbols on Windows when building shared libraries
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
-
-# Locate the mod files
-set(CMAKE_Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/mod)
+# Configure everything
+add_subdirectory(configure)
 
 # Deal with dependencies
+find_package(ferror 1.4.0)
 add_subdirectory(dependencies)
 
 # Source
 add_subdirectory(src)
+add_fortran_library(
+    ${PROJECT_NAME}
+    ${PROJECT_INCLUDE_DIR}
+    ${CMAKE_INSTALL_INCLUDEDIR}
+    ${PROJECT_VERSION}
+    ${PROJECT_VERSION_MAJOR}
+    ${COLLECTIONS_SOURCES}
+)
+link_library(${PROJECT_NAME} ${ferror_LIBRARY} ${ferror_INCLUDE_DIR})
+
 
 # Testing
 option(BUILD_TESTING "Build tests")

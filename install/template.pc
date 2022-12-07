@@ -1,0 +1,10 @@
+prefix = @CMAKE_INSTALL_PREFIX@
+libdir = ${prefix}/@CMAKE_INSTALL_FULL_LIBDIR@
+includedir = ${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: @PROJECT_NAME@
+Description: COLLECTIONS is a library that provides a set of types supporting collections in Fortran.
+Version: @PROJECT_VERSION@
+URL: https://github.com/jchristopherson/collections
+Libs: -L${libdir} -l@PROJECT_NAME@
+Cflags: -I${includedir}
