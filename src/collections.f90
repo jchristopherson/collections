@@ -1,3 +1,93 @@
+!> @mainpage
+!!
+!! @section intro_sec Introduction
+!! COLLECTIONS is  a library providing a set of types supporting collections in 
+!! Fortran.  The collection types within this library are object-oriented by 
+!! design, and utilize Fortran's unlimited polymorphic variable functionallity
+!! allowing storage of any data type.
+!!
+!! This library relies upon the 
+!! [FERROR](https://github.com/jchristopherson/ferror) library to provide a 
+!! mechanism for communicating any runtime errors that may occur while using 
+!! this library.
+!!
+!! @par Example
+!! One of the collection types this library provides is a generic, dynamically
+!! sizeable type referred to simply as list.  A simple example illustrating 
+!! basic usage of the list type is as follows.
+!!
+!! @code{.f90}
+!! program list_example
+!!     use collections
+!!     use iso_fortran_env
+!!     implicit none
+!!
+!!     ! Variables
+!!     integer(int32), parameter :: n = 10
+!!     integer(int32) :: i
+!!     type(list) :: x
+!!     class(*), pointer :: ptr
+!!
+!!     ! Create a list
+!!     do i = 1, n
+!!         call x%push(2 * i)
+!!     end do
+!!
+!!     ! Print it out to the command line
+!!     print '(A)', "***** Original List *****"
+!!     do i = 1, n
+!!         ptr => x%get(i)
+!!
+!!         ! The list uses unlimited polymorphic types; therefore, we need to
+!!         ! use the select type construct.
+!!         select type (ptr)
+!!         type is (integer(int32))
+!!             print *, ptr
+!!         end select
+!!     end do
+!!
+!!     ! Insert the integer value of 100 into the 5th slot in the list
+!!     call x%insert(5, 100)
+!!
+!!     ! Print it out again to illustrate the change
+!!     print '(A)', new_line('a') // "***** After Insertion *****"
+!!     do i = 1, x%count()
+!!         ptr => x%get(i)
+!!         select type (ptr)
+!!         type is (integer(int32))
+!!             print *, ptr
+!!         end select
+!!     end do
+!! @endcode
+!! 
+!! This program generates the following output.
+!! @code{.txt}
+!! ***** Original List *****
+!!            2
+!!            4
+!!            6
+!!            8
+!!           10
+!!           12
+!!           14
+!!           16
+!!           18
+!!           20
+!!
+!! ***** After Insertion *****
+!!            2
+!!            4
+!!            6
+!!            8
+!!          100
+!!           10
+!!           12
+!!           14
+!!           16
+!!           18
+!!           20
+!! @endcode
+
 !> A module containing various collections using Fortran's unlimited polymorphic
 !! functionallity.
 module collections
@@ -5,8 +95,6 @@ module collections
     use ferror
     implicit none
     private
-    public :: container
-    public :: node
     public :: list
     public :: linked_list
 
