@@ -15,7 +15,7 @@ include("${PROJECT_SOURCE_DIR}/cmake/helper.cmake")
 add_subdirectory(configure)
 
 # Deal with dependencies
-find_package(ferror 1.4.0)
+find_package(ferror 1.4.0 QUIET)
 add_subdirectory(dependencies)
 
 # Source
