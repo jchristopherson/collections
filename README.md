@@ -11,7 +11,7 @@ The collections library contains generic and dynamically sizeable collection typ
 This library depends upon the [FERROR](https://github.com/jchristopherson/ferror) library.
 
 ## Documentation
-TO DO.
+Documentation can be found [here](http://htmlpreview.github.io/?https://github.com/jchristopherson/collections/blob/master/doc/html/index.html).
 
 ## Examples
 The collections library provides a generic, dynamically sizeable type referred to simply as list.  A simple example illustrating basic usage of the list type is as follows.
