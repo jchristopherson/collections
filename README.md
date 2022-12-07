@@ -4,7 +4,7 @@ A set of types supporting collections in Fortran.
 ## Description
 The collections library contains generic and dynamically sizeable collection types using unlimited polymorphic types with an object-oriented design.
 
-## Compiling
+## Build
 [CMake](https://cmake.org/) is the preferred build system for this library.  See [Running CMake](https://cmake.org/runningcmake/) for instructions on how to build using CMake.
 
 ## Dependencies
