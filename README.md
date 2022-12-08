@@ -1,5 +1,5 @@
 # collections
-A set of types supporting collections in Fortran.
+A set of types supporting collections in Fortran.  Currently, the library contains a generic, dynamically sizable list and a generic linked-list type.
 
 ## Description
 The collections library contains generic and dynamically sizeable collection types using unlimited polymorphic types with an object-oriented design.
