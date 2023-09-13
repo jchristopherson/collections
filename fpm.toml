@@ -1,5 +1,5 @@
 name = "collections"
-version = "1.4.2"
+version = "1.0.1"
 license = "GPL-3.0"
 author = "Jason Christopherson"
 maintainer = "Jason Christopherson"
@@ -14,7 +14,7 @@ source-dir = "src"
 ferror = { git = "https://github.com/jchristopherson/ferror/git" }
 
 [[test]]
-name = "collections_test.f90"
+name = "collections_test"
 source-dir = "test"
 main = "collections_test.f90"
 
