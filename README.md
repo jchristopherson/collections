@@ -14,7 +14,7 @@ fpm build
 The COLLECTIONS library can be used within your FPM project by adding the following to your fpm.toml file.
 ```
 [dependencies]
-collections = { git = "https://github.com/jchristopherson/collections/git" }
+collections = { git = "https://github.com/jchristopherson/collections" }
 ```
 
 ## Dependencies
