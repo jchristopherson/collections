@@ -1,7 +1,13 @@
-program list_test
+module list_test
     use collections
     use iso_fortran_env
     implicit none
+
+contains
+
+function test_list() result(rst)
+    ! Arguments
+    logical :: rst
 
     ! Variables
     integer(int32), parameter :: n = 20
@@ -11,6 +17,7 @@ program list_test
 
     ! Initialization
     flag = 0
+    rst = .true.
 
     ! Fill the list with integers
     do i = 1, n
@@ -99,6 +106,11 @@ program list_test
     end if
 
     ! End
+    return
+
+    ! Failed Test
 100 continue
-    call exit(flag)
-end program
+    rst = .false.
+end function
+
+end module
