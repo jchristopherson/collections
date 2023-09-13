@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 project(
     collections 
     LANGUAGES Fortran
-    VERSION 1.0.0
+    VERSION 1.0.1
 )
 
 # Utilize the GNU installation structure
@@ -15,7 +15,7 @@ include("${PROJECT_SOURCE_DIR}/cmake/helper.cmake")
 add_subdirectory(configure)
 
 # Deal with dependencies
-find_package(ferror 1.4.0 QUIET)
+find_package(ferror 1.4.2 QUIET)
 add_subdirectory(dependencies)
 
 # Source
@@ -39,7 +39,7 @@ include(CTest)
 message(STATUS "Build tests: ${BUILD_TESTING}")
 if (BUILD_TESTING)
     enable_testing()
-    add_subdirectory(tests)
+    add_subdirectory(test)
 endif()
 
 # Examples
