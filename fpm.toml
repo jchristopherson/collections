@@ -11,7 +11,7 @@ homepage = "https://github.com/jchristopherson/collections"
 source-dir = "src"
 
 [dependencies]
-ferror = { git = "https://github.com/jchristopherson/ferror/git" }
+ferror = { git = "https://github.com/jchristopherson/ferror" }
 
 [[test]]
 name = "collections_test"
