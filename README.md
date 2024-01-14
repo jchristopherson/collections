@@ -7,11 +7,21 @@ The collections library contains generic and dynamically sizeable collection typ
 ## Build
 [CMake](https://cmake.org/) is the preferred build system for this library.  See [Running CMake](https://cmake.org/runningcmake/) for instructions on how to build using CMake.
 
+[FPM](https://github.com/fortran-lang/fpm) can also be used to build this library using the provided fpm.toml.
+```txt
+fpm build
+```
+The COLLECTIONS library can be used within your FPM project by adding the following to your fpm.toml file.
+```
+[dependencies]
+collections = { git = "https://github.com/jchristopherson/collections" }
+```
+
 ## Dependencies
 This library depends upon the [FERROR](https://github.com/jchristopherson/ferror) library.
 
 ## Documentation
-Documentation can be found [here](http://htmlpreview.github.io/?https://github.com/jchristopherson/collections/blob/master/doc/html/index.html).
+The documentation can be found [here](https://jchristopherson.github.io/collections/).
 
 ## Examples
 The collections library provides a generic, dynamically sizeable type referred to simply as list.  A simple example illustrating basic usage of the list type is as follows.

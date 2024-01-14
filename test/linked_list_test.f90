@@ -1,7 +1,12 @@
-program linked_list_test
+module linked_list_test
     use collections
     use iso_fortran_env
     implicit none
+contains
+
+function test_linked_list() result(rst)
+    ! Arguments
+    logical :: rst
 
     ! Variables
     integer(int32), parameter :: n = 20
@@ -12,6 +17,7 @@ program linked_list_test
 
     ! Initialization
     flag = 0
+    rst = .true.
 
     ! Fill the list
     do i = 1, n
@@ -88,6 +94,11 @@ program linked_list_test
     end if
 
     ! End
+    return
+
+    ! Test Failure
 100 continue
-    call exit(flag)
-end program
+    rst = .false.
+end function
+
+end module
