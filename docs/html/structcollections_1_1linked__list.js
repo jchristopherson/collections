@@ -1,14 +1,14 @@
 var structcollections_1_1linked__list =
 [
-    [ "clear", "structcollections_1_1linked__list.html#a7da19ba3c4ac06986e88832bc7fafbdd", null ],
-    [ "count", "structcollections_1_1linked__list.html#a073055ee0564ab9463c1630f261d04ae", null ],
-    [ "get", "structcollections_1_1linked__list.html#acf39a0250fdbf2c391f1703db44eb56d", null ],
-    [ "ll_destroy", "structcollections_1_1linked__list.html#a542d9e354bc9376d04c232473dd577bb", null ],
-    [ "move_to_first", "structcollections_1_1linked__list.html#a9e7ee5636586a1b444db85db35079e06", null ],
-    [ "move_to_last", "structcollections_1_1linked__list.html#a910be054f7bf67023acae76185e67f57", null ],
-    [ "next", "structcollections_1_1linked__list.html#aae5c5961794369c03954bc300c572953", null ],
-    [ "pop", "structcollections_1_1linked__list.html#a80a12ed8c4dc23722924a05ec85c0dd0", null ],
-    [ "previous", "structcollections_1_1linked__list.html#a224d169ce4f29328aa4ac3fa403bac62", null ],
-    [ "push", "structcollections_1_1linked__list.html#a394e7dba4af354176e9e96f468ad7cd0", null ],
-    [ "set", "structcollections_1_1linked__list.html#ae5af431f5c22f4c35b334f25fed8a0d0", null ]
+    [ "ll_destroy", "structcollections_1_1linked__list.html#a013aac4c54f59f20c1de06509732fd67", null ],
+    [ "clear", "structcollections_1_1linked__list.html#a643f1da33a6dfb4d609dad5832ae39ad", null ],
+    [ "count", "structcollections_1_1linked__list.html#a08fe4a8fdcaeb76df67076b23444ae0f", null ],
+    [ "get", "structcollections_1_1linked__list.html#ab6cdaf44f20c787c8a746a45492f986b", null ],
+    [ "move_to_first", "structcollections_1_1linked__list.html#a30a67db7743f0e12f7d5708c59c8e58c", null ],
+    [ "move_to_last", "structcollections_1_1linked__list.html#a49357bfbeced9bbc2fb083f1c00a056d", null ],
+    [ "next", "structcollections_1_1linked__list.html#aa4613c7dbb9f2822386afefc552d0dc3", null ],
+    [ "pop", "structcollections_1_1linked__list.html#a0de4b8bbcb1a8e827cf9548376d5b63b", null ],
+    [ "previous", "structcollections_1_1linked__list.html#a8b21e8df51020b5c4bfdd9bc63db15ba", null ],
+    [ "push", "structcollections_1_1linked__list.html#afdfceed421d08c6cf90a11fdf394a64d", null ],
+    [ "set", "structcollections_1_1linked__list.html#ae3a1ec92f165aaaea30f403468baf0c3", null ]
 ];
