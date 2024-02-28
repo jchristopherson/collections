@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 project(
     collections 
     LANGUAGES Fortran
-    VERSION 1.0.2
+    VERSION 1.0.3
 )
 
 # Utilize the GNU installation structure
@@ -15,7 +15,6 @@ include("${PROJECT_SOURCE_DIR}/cmake/helper.cmake")
 add_subdirectory(configure)
 
 # Deal with dependencies
-find_package(ferror 1.4.2 QUIET)
 add_subdirectory(dependencies)
 
 # Source
@@ -29,9 +28,6 @@ add_fortran_library(
     ${COLLECTIONS_SOURCES}
 )
 link_library(${PROJECT_NAME} ${ferror_LIBRARY} ${ferror_INCLUDE_DIR})
-
-# Installation
-add_subdirectory(install)
 
 # Testing
 option(BUILD_TESTING "Build tests")
