@@ -2,32 +2,23 @@ cmake_minimum_required(VERSION 3.24)
 project(
     collections 
     LANGUAGES Fortran
-    VERSION 1.0.3
+    VERSION 1.0.4
 )
-
-# Utilize the GNU installation structure
-include(GNUInstallDirs)
-
-# Get the macros and functions we'll need
-include("${PROJECT_SOURCE_DIR}/cmake/helper.cmake")
+set(CMAKE_Fortran_STANDARD 2018)
+set(CMAKE_Fortran_STANDARD_REQUIRED TRUE)
 
 # Configure everything
 add_subdirectory(configure)
 
-# Deal with dependencies
-add_subdirectory(dependencies)
-
 # Source
 add_subdirectory(src)
-add_fortran_library(
-    ${PROJECT_NAME}
-    ${PROJECT_INCLUDE_DIR}
-    ${CMAKE_INSTALL_INCLUDEDIR}
-    ${PROJECT_VERSION}
-    ${PROJECT_VERSION_MAJOR}
-    ${COLLECTIONS_SOURCES}
+
+# Installation Instructions
+install(
+    EXPORT ${PROJECT_NAME}-targets
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION "${CMAKE_INSALL_LIBDIR}/cmake/${PROJECT_NAME}"
 )
-link_library(${PROJECT_NAME} ${ferror_LIBRARY} ${ferror_INCLUDE_DIR})
 
 # Testing
 option(BUILD_TESTING "Build tests")
@@ -39,8 +30,8 @@ if (BUILD_TESTING)
 endif()
 
 # Examples
-option(BUILD_collections_EXAMPLES "Build examples")
-message(STATUS "Build collections examples: ${BUILD_collections_EXAMPLES}")
-if (BUILD_collections_EXAMPLES)
+option(BUILD_COLLECTIONS_EXAMPLES "Build collections examples")
+message(STATUS "Build COLLECTIONS examples: ${BUILD_COLLECTIONS_EXAMPLES}")
+if (${BUILD_COLLECTIONS_EXAMPLES})
     add_subdirectory(examples)
 endif()
