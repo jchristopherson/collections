@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 project(
     collections 
     LANGUAGES Fortran
-    VERSION 1.0.4
+    VERSION 1.0.5
 )
 set(CMAKE_Fortran_STANDARD 2018)
 set(CMAKE_Fortran_STANDARD_REQUIRED TRUE)
@@ -17,7 +17,7 @@ add_subdirectory(src)
 install(
     EXPORT ${PROJECT_NAME}-targets
     NAMESPACE ${PROJECT_NAME}::
-    DESTINATION "${CMAKE_INSALL_LIBDIR}/cmake/${PROJECT_NAME}"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
 )
 
 # Testing
