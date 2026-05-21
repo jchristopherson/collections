@@ -66,26 +66,17 @@ module subroutine list_set_capacity(this, n, err)
 
     if (n > m) then
         ! Increase capacity
-        allocate(copy(m), stat = flag, source = this%m_list(1:m))
-        if (flag /= 0) go to 100
+        call move_alloc(this%m_list, copy)
 
-        deallocate(this%m_list)
         allocate(this%m_list(n), stat = flag)
         if (flag /= 0) go to 100
 
         this%m_list(1:m) = copy(1:m)
     else
         ! Decrease capacity
-        allocate(copy(n), stat = flag)   ! We only need to keep the first n items
+        allocate(copy(n), source = this%m_list(1:n), stat = flag)
         if (flag /= 0) go to 100
-
-        copy = this%m_list(1:n)
-
-        deallocate(this%m_list)
-        allocate(this%m_list(n), stat = flag)
-        if (flag /= 0) go to 100
-
-        this%m_list = copy
+        call move_alloc(copy, this%m_list)
     end if
     return
 
