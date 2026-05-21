@@ -77,6 +77,7 @@ module subroutine list_set_capacity(this, n, err)
         allocate(copy(n), source = this%m_list(1:n), stat = flag)
         if (flag /= 0) go to 100
         call move_alloc(copy, this%m_list)
+        this%m_count = n
     end if
     return
 
