@@ -30,9 +30,9 @@ jobs:
         --slave /usr/bin/gcov gcov /usr/bin/gcov-${GCC_V}
 
     - name: Install fpm
-      uses: fortran-lang/setup-fpm@v5
+      uses: fortran-lang/setup-fpm@v10
       with:
-        fpm-version: 'v0.10.1'
+        fpm-version: 'current'
 
     - name: Build COLLECTIONS
       run: |

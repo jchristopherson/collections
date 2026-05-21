@@ -98,6 +98,23 @@ function test_list() result(rst)
         end select
     end do
 
+    ! Decrease the list capacity
+    call x%set_capacity(n / 2)
+    if (x%count() /= n / 2) then
+        flag = -5
+        go to 100
+    end if
+    do i = 1, n / 2
+        ptr => x%get(i)
+        select type (ptr)
+        type is (integer(int32))
+            if (ptr /= i) then
+                flag = i * 100000
+                go to 100
+            end if
+        end select
+    end do
+
     ! Clear the list
     call x%clear()
     if (x%count() /= 0) then

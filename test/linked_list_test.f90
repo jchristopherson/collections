@@ -99,6 +99,7 @@ function test_linked_list() result(rst)
     ! Test Failure
 100 continue
     rst = .false.
+    return
 end function
 
 end module
