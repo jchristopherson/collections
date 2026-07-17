@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 project(
     collections 
     LANGUAGES Fortran
-    VERSION 1.0.8
+    VERSION 1.0.9
 )
 set(CMAKE_Fortran_STANDARD 2018)
 set(CMAKE_Fortran_STANDARD_REQUIRED TRUE)
