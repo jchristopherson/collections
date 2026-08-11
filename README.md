@@ -17,9 +17,6 @@ The COLLECTIONS library can be used within your FPM project by adding the follow
 collections = { git = "https://github.com/jchristopherson/collections" }
 ```
 
-## Dependencies
-This library depends upon the [FERROR](https://github.com/jchristopherson/ferror) library.
-
 ## Documentation
 The documentation can be found [here](https://jchristopherson.github.io/collections/).
 
