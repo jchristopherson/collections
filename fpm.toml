@@ -1,5 +1,5 @@
 name = "collections"
-version = "1.1.0"
+version = "1.2.0"
 license = "MIT"
 author = "Jason Christopherson"
 maintainer = "Jason Christopherson"
@@ -9,9 +9,6 @@ homepage = "https://github.com/jchristopherson/collections"
 
 [library]
 source-dir = "src"
-
-[dependencies]
-ferror = { git = "https://github.com/jchristopherson/ferror" }
 
 [[test]]
 name = "collections_test"
