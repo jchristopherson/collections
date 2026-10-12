@@ -407,7 +407,7 @@ subroutine list_remove(this, i)
         !! The one-based index defining which item to remove.
 
     ! Local Variables
-    integer(int32) :: n
+    integer(int32) :: n, j
     
     ! Initialization
     n = this%count()
@@ -425,7 +425,11 @@ subroutine list_remove(this, i)
         call this%clear()
     else
         call this%m_list(i)%free()
-        this%m_list(i:n-1) = this%m_list(i+1:n)
+        do j = i, n - 1
+            this%m_list(j)%m_item => this%m_list(j+1)%m_item
+            this%m_list(j)%m_delete = this%m_list(j+1)%m_delete
+            nullify(this%m_list(j+1)%m_item)
+        end do
         this%m_count = this%m_count - 1
     end if
 end subroutine
@@ -703,7 +707,7 @@ subroutine ll_clear(this)
     if (n == 0) return
 
     ! Process
-    currentNode => this%m_current
+    currentNode => this%m_first
     do i = 1, n
         if (.not.associated(currentNode)) cycle
         
